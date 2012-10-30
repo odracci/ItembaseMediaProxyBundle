@@ -1,0 +1,21 @@
+{
+    "name": "itembase/mediaproxybundle",
+    "description": "Proxy HTTP over HTTPS",
+    "keywords": ["proxy", "http", "https"],
+    "homepage": "http://github.com/Itembase/IBMediaProxyBundle",
+    "type": "bundle",
+    "license": "Beerware",
+    "authors": [
+        {
+            "name": "Thomas Bretzke",
+            "email": "tb@itembase.biz",
+            "homepage": "https://itembase.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-0": {"MediaProxyBundle": "bundles/IB/"}
+    }
+}
