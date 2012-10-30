@@ -2,49 +2,54 @@
 
 namespace IB\MediaProxyBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Response;
+
 use IB\MediaProxyBundle\Exception\WrongHashException;
 
-
-class ProxyController extends Controller
+class ProxyController extends ContainerAware
 {
-	
-	/**
-	 * Action to receive proxied media
-	 *
-	 * @return media data
-	 * @author Thomas Bretzke
-	 **/
-	public function proxyMediaAction($hash)
-	{
-		$request = $this->getRequest();
-		$url = rawurldecode($request->query->get('path'));
-		$checkHash = hash_hmac($this->container->getParameter('ib_media_proxy.algorithm'), $url, $this->container->getParameter('ib_media_proxy.secret'));
-		if ($checkHash == rawurldecode($hash)) {
+    /**
+     * Action to receive proxied media
+     *
+     * @param  string $hash
+     * @return media data
+     * @author Thomas Bretzke
+     **/
+    public function proxyMediaAction($hash)
+    {
+        $container = $this->container;
+        $url = rawurldecode(
+            $container->get('request')->query->get('path')
+        );
+        $checkHash = hash_hmac(
+            $container->getParameter('ib_media_proxy.algorithm'),
+            $url,
+            $container->getParameter('ib_media_proxy.secret')
+        );
 
-			// Get file with curl
-			$curlHandle = curl_init($url);
+        if ($checkHash != rawurldecode($hash)) {
+            throw new WrongHashException('Sorry!');
+        }
 
-			// Don't return HTTP headers, just contents!
-			curl_setopt($curlHandle, CURLOPT_HEADER, false);
-			curl_setopt($curlHandle, CURLOPT_FOLLOWLOCATION, true); 
-			curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+        // Get file with curl
+        $curlHandle = curl_init($url);
 
-			// Make the call
-			$response = curl_exec($curlHandle);
+        // Don't return HTTP headers, just contents!
+        curl_setopt($curlHandle, CURLOPT_HEADER, false);
+        curl_setopt($curlHandle, CURLOPT_FOLLOWLOCATION, true); 
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
 
-			$headers = array(
-			    'Content-Type' => curl_getinfo($curlHandle, CURLINFO_CONTENT_TYPE),
-			    'Cache-Control' => 'private'
-			);
+        // Make the call
+        $response = curl_exec($curlHandle);
 
-			curl_close($curlHandle);
+        $headers = array(
+            'Content-Type' => curl_getinfo($curlHandle, CURLINFO_CONTENT_TYPE),
+            'Cache-Control' => 'private'
+        );
 
-			return new Response($response, 200, $headers);
+        curl_close($curlHandle);
 
-		} else {
-			throw new WrongHashException('Sorry!');
-		}
-	}
+        return new Response($response, 200, $headers);
+    }
 }
