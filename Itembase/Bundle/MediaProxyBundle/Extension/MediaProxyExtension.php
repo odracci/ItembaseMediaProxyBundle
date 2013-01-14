@@ -1,6 +1,6 @@
 <?php
 
-namespace IB\MediaProxyBundle\Extension;
+namespace Itembase\Bundle\MediaProxyBundle\Extension;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -53,7 +53,7 @@ class MediaProxyExtension extends \Twig_Extension {
 		if ($secured == true) {
 			// Generate proxy path
 			$hash = hash_hmac($this->container->getParameter('ib_media_proxy.algorithm'), $url, $this->container->getParameter('ib_media_proxy.secret'));
-			return $this->router->generate('IBMediaProxyBundle_proxy', array('hash' => urlencode($hash))).'?path='.rawurlencode($url);			
+			return $this->router->generate('ItembaseMediaProxyBundle_proxy', array('hash' => urlencode($hash))).'?path='.rawurlencode($url);			
 		} else {
 			return $url;
 		}

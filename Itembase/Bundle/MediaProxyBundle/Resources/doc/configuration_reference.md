@@ -1,4 +1,4 @@
-IBMediaProxyBundle Configuration Reference
+ItembaseMediaProxyBundle Configuration Reference
 ==========================================
 
 Below a list of all possible config values including their default values:

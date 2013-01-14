@@ -1,0 +1,3 @@
+ItembaseMediaProxyBundle_proxy:
+    pattern:  /origin/{hash}
+    defaults: { _controller: ItembaseMediaProxyBundle:Proxy:proxyMedia }

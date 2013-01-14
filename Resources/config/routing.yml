@@ -1,3 +1,0 @@
-IBMediaProxyBundle_proxy:
-    pattern:  /origin/{hash}
-    defaults: { _controller: IBMediaProxyBundle:Proxy:proxyMedia }

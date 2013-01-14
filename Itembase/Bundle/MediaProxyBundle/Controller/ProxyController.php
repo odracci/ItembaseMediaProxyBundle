@@ -1,11 +1,10 @@
 <?php
 
-namespace IB\MediaProxyBundle\Controller;
+namespace Itembase\Bundle\MediaProxyBundle\Controller;
 
+use Itembase\Bundle\MediaProxyBundle\Exception\WrongHashException;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Response;
-
-use IB\MediaProxyBundle\Exception\WrongHashException;
 
 class ProxyController extends ContainerAware
 {

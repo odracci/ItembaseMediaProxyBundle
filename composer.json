@@ -1,8 +1,8 @@
 {
-    "name": "itembase/mediaproxybundle",
+    "name": "itembase/itembasemediaproxybundle",
     "description": "Proxy HTTP over HTTPS",
     "keywords": ["proxy", "http", "https"],
-    "homepage": "http://github.com/Itembase/IBMediaProxyBundle",
+    "homepage": "https://github.com/ItemBaseGmbH/ItembaseMediaProxyBundle",
     "type": "bundle",
     "license": "Beerware",
     "authors": [
@@ -16,6 +16,6 @@
         "php": ">=5.3.0"
     },
     "autoload": {
-        "psr-0": {"IB\\MediaProxyBundle": ""}
+        "psr-0": {"Itembase\\Bundles\\MediaProxyBundle": ""}
     }
 }

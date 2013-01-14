@@ -1,7 +1,7 @@
-IBMediaProxyBundle
+ItembaseMediaProxyBundle
 ==================
 
-IBMediaProxyBundle implements a proxy for https servers to include external files that are only available via http.
+ItembaseMediaProxyBundle implements a proxy for https servers to include external files that are only available via http.
 
 Features:
 
