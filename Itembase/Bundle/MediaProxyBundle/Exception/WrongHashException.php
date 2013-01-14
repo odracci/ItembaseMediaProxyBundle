@@ -7,8 +7,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * WrongHashException
  *
- * @author Thomas Bretzke <tb@ib.com>
- * @copyright (c) 2012 IB GmbH
+ * @author Thomas Bretzke <tb@itembase.biz>
+ * @copyright (c) 2012 itembase GmbH
  */
 class WrongHashException extends NotFoundHttpException
 {
