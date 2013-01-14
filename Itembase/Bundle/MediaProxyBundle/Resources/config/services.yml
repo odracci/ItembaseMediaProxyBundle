@@ -1,6 +1,14 @@
+parameters:
+	ib_media_proxy.controller.class : Itembase\Bundle\MediaProxyBundle\Controller
+	ib_media_proxy.extension.class : Itembase\Bundle\MediaProxyBundle\Extension\MediaProxyExtension
+
 services:
+	ib_media_proxy.controller:
+        class: %ib_media_proxy.controller.class%
+        arguments: [%ib_media_proxy.algorithm%, %ib_media_proxy.secret%]
+
     ib_media_proxy.extension:
-        class: Itembase\Bundle\MediaProxyBundle\Extension\MediaProxyExtension
+        class: %ib_media_proxy.extension.class%
         tags:
             -  { name: twig.extension }
         arguments: [@router, @service_container]

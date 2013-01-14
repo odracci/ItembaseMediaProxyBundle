@@ -1,31 +1,40 @@
 <?php
-
 namespace Itembase\Bundle\MediaProxyBundle\Controller;
 
 use Itembase\Bundle\MediaProxyBundle\Exception\WrongHashException;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ProxyController extends ContainerAware
+/**
+ *
+ * @author Thomas Bretzke <tb@itembase.biz>, Bora Tunca <bt@itembase.biz>
+ */
+class ProxyController
 {
+    private $algorithm;
+    private $secret;
+
+    /**
+     *
+     * @param string $algorithm
+     * @param string $secret
+     */
+    public function __construct($algorithm, $secret)
+    {
+        $this->algorithm = $algorithm;
+        $this->secret = $secret;
+    }
+
     /**
      * Action to receive proxied media
      *
-     * @param  string $hash
-     * @return media data
-     * @author Thomas Bretzke
-     **/
-    public function proxyMediaAction($hash)
+     * @param string $hash
+     * @param Request $request
+     */
+    public function proxyMedia($hash, Request $request)
     {
-        $container = $this->container;
-        $url = rawurldecode(
-            $container->get('request')->query->get('path')
-        );
-        $checkHash = hash_hmac(
-            $container->getParameter('ib_media_proxy.algorithm'),
-            $url,
-            $container->getParameter('ib_media_proxy.secret')
-        );
+        $url = rawurldecode($request->query->get('path'));
+        $checkHash = hash_hmac($this->algorithm, $url, $this->secret);
 
         if ($checkHash != rawurldecode($hash)) {
             throw new WrongHashException('Sorry!');
