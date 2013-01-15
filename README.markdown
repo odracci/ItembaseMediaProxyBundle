@@ -13,4 +13,6 @@ For configuration see [configuration reference](https://github.com/ItemBaseGmbH/
 
 The bundle is part of the Itembase.com source and is open for everyone to use and contribute.
 
+[![Build Status](https://travis-ci.org/ItemBaseGmbH/ItembaseMediaProxyBundle.png)](https://travis-ci.org/ItemBaseGmbH/ItembaseMediaProxyBundle)
+
 (c) 2012 Itembase GmbH
