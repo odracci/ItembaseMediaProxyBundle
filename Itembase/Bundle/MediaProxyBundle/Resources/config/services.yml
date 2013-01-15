@@ -9,6 +9,6 @@ services:
 
     ib_media_proxy.extension:
         class: %ib_media_proxy.extension.class%
+        arguments: [%ib_media_proxy.prefix_path%, %ib_media_proxy.ignore_https%, %ib_media_proxy.algorithm%, %ib_media_proxy.secret%, @router]
         tags:
             -  { name: twig.extension }
-        arguments: [@router, @service_container]
