@@ -9,4 +9,7 @@ before_script:
 
 notifications:
   email:
-    - dev@itembase.biz
+    recipients:
+      - dev@itembase.biz
+    on_success: always
+    on_failure: always
