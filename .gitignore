@@ -1,3 +1,7 @@
+vendor/
+vagrant/
+composer.lock
+phpunit.xml
 .buildpath
 .project
 .settings
