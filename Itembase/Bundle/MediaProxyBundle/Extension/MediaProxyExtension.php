@@ -34,6 +34,10 @@ class MediaProxyExtension extends \Twig_Extension {
 		$this->router = $router;
 	}
 
+    /**
+	 *
+     * @return array
+     */
 	public function getFilters()
 	{
 		return array(
@@ -41,15 +45,18 @@ class MediaProxyExtension extends \Twig_Extension {
 		);
 	}
 
-	public function proxyUrl($url) 
+    /**
+	 *
+	 * @param string $url
+     * @return string
+     */
+    public function proxyUrl($url) 
 	{
 		$parsedUrl = parse_url($url);
 
 		if (false === array_key_exists('scheme', $parsedUrl)) { return $this->prefixPath.$url; }
 
-		if ($this->ignoreHttps && 'https' === $parsedUrl['scheme']) { // when we ignore https, we have to pre check the protocol
-			return $url;
-		}
+		if ($this->ignoreHttps && 'https' === $parsedUrl['scheme']) { return $url; }
 
 		$isSecure = (!empty($_SERVER['HTTPS'])) && ($_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443);
 		if (false === $isSecure) {
@@ -61,6 +68,10 @@ class MediaProxyExtension extends \Twig_Extension {
 		return $this->router->generate('ItembaseMediaProxyBundle_proxy', array('hash' => urlencode($hash), 'path' => rawurlencode($url)));
 	}
 
+    /**
+	 *
+     * @return string
+     */
 	public function getName()
 	{
 		return 'ib_media_proxy';
