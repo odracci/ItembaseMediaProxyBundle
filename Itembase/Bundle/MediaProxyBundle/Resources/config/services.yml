@@ -1,14 +1,14 @@
 parameters:
-	ib_media_proxy.controller.class : Itembase\Bundle\MediaProxyBundle\Controller
-	ib_media_proxy.extension.class : Itembase\Bundle\MediaProxyBundle\Extension\MediaProxyExtension
+    itembase_media_proxy.controller.class : Itembase\Bundle\MediaProxyBundle\Controller
+    itembase_media_proxy.extension.class : Itembase\Bundle\MediaProxyBundle\Extension\MediaProxyExtension
 
 services:
-	ib_media_proxy.controller:
-        class: %ib_media_proxy.controller.class%
-        arguments: [%ib_media_proxy.algorithm%, %ib_media_proxy.secret%]
+    itembase_media_proxy.controller:
+        class: %itembase_media_proxy.controller.class%
+        arguments: [%itembase_media_proxy.algorithm%, %itembase_media_proxy.secret%]
 
-    ib_media_proxy.extension:
-        class: %ib_media_proxy.extension.class%
-        arguments: [%ib_media_proxy.prefix_path%, %ib_media_proxy.ignore_https%, %ib_media_proxy.algorithm%, %ib_media_proxy.secret%, @router]
+    itembase_media_proxy.extension:
+        class: %itembase_media_proxy.extension.class%
+        arguments: [%itembase_media_proxy.prefix_path%, %itembase_media_proxy.ignore_https%, %itembase_media_proxy.algorithm%, %itembase_media_proxy.secret%, @router]
         tags:
             -  { name: twig.extension }

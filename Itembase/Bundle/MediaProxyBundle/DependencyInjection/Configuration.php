@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('ib_media_proxy');
+        $rootNode = $treeBuilder->root('itembase_media_proxy');
 
         $rootNode
             ->children()

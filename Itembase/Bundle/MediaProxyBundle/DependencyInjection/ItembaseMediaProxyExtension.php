@@ -19,10 +19,10 @@ class ItembaseMediaProxyExtension extends Extension
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-        $container->setParameter('ib_media_proxy.algorithm', $config['algorithm']);
-        $container->setParameter('ib_media_proxy.secret', $config['secret']);
-        $container->setParameter('ib_media_proxy.ignore_https', $config['ignore_https']);
-        $container->setParameter('ib_media_proxy.prefix_path', $config['prefix_path']);
+        $container->setParameter('itembase_media_proxy.algorithm', $config['algorithm']);
+        $container->setParameter('itembase_media_proxy.secret', $config['secret']);
+        $container->setParameter('itembase_media_proxy.ignore_https', $config['ignore_https']);
+        $container->setParameter('itembase_media_proxy.prefix_path', $config['prefix_path']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

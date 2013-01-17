@@ -52,7 +52,7 @@ class MediaProxyExtensionTest extends \PHPUnit_Framework_TestCase
 		$router = $this->createRouterMock();
 
 		$extension = new MediaProxyExtension(null, null, null, null, $router);
-		$this->assertSame($extension->getName(), 'ib_media_proxy', 'callable method name is not set correctly');
+		$this->assertSame($extension->getName(), 'itembase_media_proxy', 'callable method name is not set correctly');
 	}
 
 	/**

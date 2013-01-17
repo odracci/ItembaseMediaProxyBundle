@@ -74,6 +74,6 @@ class MediaProxyExtension extends \Twig_Extension {
      */
 	public function getName()
 	{
-		return 'ib_media_proxy';
+		return 'itembase_media_proxy';
 	}
 }
