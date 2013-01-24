@@ -1,5 +1,5 @@
 parameters:
-    itembase_media_proxy.controller.class : Itembase\Bundle\MediaProxyBundle\Controller
+    itembase_media_proxy.controller.class : Itembase\Bundle\MediaProxyBundle\Controller\ProxyController
     itembase_media_proxy.extension.class : Itembase\Bundle\MediaProxyBundle\Extension\MediaProxyExtension
 
 services:
