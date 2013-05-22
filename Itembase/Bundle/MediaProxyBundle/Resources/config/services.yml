@@ -9,6 +9,6 @@ services:
 
     itembase_media_proxy.extension:
         class: %itembase_media_proxy.extension.class%
-        arguments: [%itembase_media_proxy.prefix_path%, %itembase_media_proxy.ignore_https%, %itembase_media_proxy.algorithm%, %itembase_media_proxy.secret%, @router]
+        arguments: [%itembase_media_proxy.prefix_path%, %itembase_media_proxy.ignore_https%, %itembase_media_proxy.algorithm%, %itembase_media_proxy.secret%, @router, @event_dispatcher]
         tags:
             -  { name: twig.extension }

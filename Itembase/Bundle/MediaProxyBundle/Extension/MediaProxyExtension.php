@@ -2,6 +2,9 @@
 namespace Itembase\Bundle\MediaProxyBundle\Extension;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Itembase\Bundle\MediaProxyBundle\MediaProxyEvents;
+use Itembase\Bundle\MediaProxyBundle\Event\MediaProxyEvent;
 
 /**
  * Itembase MediaProxyExtension
@@ -16,6 +19,7 @@ class MediaProxyExtension extends \Twig_Extension {
 	private $algorithm;
 	private $secret;
 	private $router;
+	private $dispatcher;
 
     /**
      *
@@ -25,13 +29,14 @@ class MediaProxyExtension extends \Twig_Extension {
      * @param string $secret
      * @param UrlGeneratorInterface $router
      */
-	public function __construct($prefixPath, $ignoreHttps, $algorithm, $secret, UrlGeneratorInterface $router)
+	public function __construct($prefixPath, $ignoreHttps, $algorithm, $secret, UrlGeneratorInterface $router, EventDispatcherInterface $dispatcher)
 	{
 		$this->prefixPath = $prefixPath;
 		$this->ignoreHttps = $ignoreHttps;
 		$this->algorithm = $algorithm;
 		$this->secret = $secret;
 		$this->router = $router;
+		$this->dispatcher = $dispatcher;
 	}
 
     /**
@@ -54,6 +59,11 @@ class MediaProxyExtension extends \Twig_Extension {
 	{
 		$parsedUrl = parse_url($url);
 
+		// Dispatch event
+		$event = new MediaProxyEvent($url);
+		$this->dispatcher->dispatch(MediaProxyEvents::MEDIA_PROXY, $event);
+		var_dump('dispatched');
+
 		if (false === array_key_exists('scheme', $parsedUrl)) { return $this->prefixPath.$url; }
 
 		if ($this->ignoreHttps && 'https' === $parsedUrl['scheme']) { return $url; }
@@ -65,6 +75,11 @@ class MediaProxyExtension extends \Twig_Extension {
 
 		// Generate proxy path
 		$hash = hash_hmac($this->algorithm, $url, $this->secret);
+
+		// Dispatch event
+		$event = new MediaProxyEvent($url);
+		$this->dispatcher->dispatch(MediaProxyEvents::MEDIA_PROXY, $event);
+
 		return $this->router->generate('ItembaseMediaProxyBundle_proxy', array('hash' => urlencode($hash), 'path' => rawurlencode($url)));
 	}
 
