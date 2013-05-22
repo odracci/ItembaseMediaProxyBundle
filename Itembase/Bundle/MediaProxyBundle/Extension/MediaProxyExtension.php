@@ -59,11 +59,6 @@ class MediaProxyExtension extends \Twig_Extension {
 	{
 		$parsedUrl = parse_url($url);
 
-		// Dispatch event
-		$event = new MediaProxyEvent($url);
-		$this->dispatcher->dispatch(MediaProxyEvents::MEDIA_PROXY, $event);
-		var_dump('dispatched');
-
 		if (false === array_key_exists('scheme', $parsedUrl)) { return $this->prefixPath.$url; }
 
 		if ($this->ignoreHttps && 'https' === $parsedUrl['scheme']) { return $url; }
