@@ -7,10 +7,22 @@ use Itembase\Bundle\MediaProxyBundle\Extension\MediaProxyExtension;
  * MediaProxyExtension twig filter tests
  *
  * @author Bora Tunca <bt@itembase.biz>
+ * @author Thomas Bretzke <tb@itembase.biz>
  * @copyright (c) 2013 Itembase GmbH
  */
 class MediaProxyExtensionTest extends \PHPUnit_Framework_TestCase
 {
+
+	/**
+	 *
+	 * @return EventDispatcherInterface mock object
+	 */
+	private function createDispatcherMock()
+	{
+		return $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')
+			->disableOriginalConstructor()
+			->getMock();
+	}
 
 	/**
 	 *
@@ -29,8 +41,9 @@ class MediaProxyExtensionTest extends \PHPUnit_Framework_TestCase
 	public function testGetFilters()
 	{
 		$router = $this->createRouterMock();
+		$dispatcher = $this->createDispatcherMock();
 
-		$extension = new MediaProxyExtension(null, null, null, null, $router);
+		$extension = new MediaProxyExtension(null, null, null, null, $router, $dispatcher);
 		$filters = $extension->getFilters();
 
 		$this->assertArrayHasKey('ib_proxy_url', $filters, 'expected filter is not loaded.');
@@ -50,8 +63,9 @@ class MediaProxyExtensionTest extends \PHPUnit_Framework_TestCase
 	public function testGetName()
 	{
 		$router = $this->createRouterMock();
+		$dispatcher = $this->createDispatcherMock();
 
-		$extension = new MediaProxyExtension(null, null, null, null, $router);
+		$extension = new MediaProxyExtension(null, null, null, null, $router, $dispatcher);
 		$this->assertSame($extension->getName(), 'itembase_media_proxy', 'callable method name is not set correctly');
 	}
 
@@ -61,13 +75,14 @@ class MediaProxyExtensionTest extends \PHPUnit_Framework_TestCase
 	public function testProxyUrlReturnPrefix()
 	{
 		$router = $this->createRouterMock();
+		$dispatcher = $this->createDispatcherMock();
 
 		$prefixPath = 'www.cdn.domain.com';
 		$ignoreHttps = false;
 		$algorithm = 'sha2';
 		$secret = 'secretttToptttTen';
 
-		$extension = new MediaProxyExtension($prefixPath, $ignoreHttps, $algorithm, $secret, $router);
+		$extension = new MediaProxyExtension($prefixPath, $ignoreHttps, $algorithm, $secret, $router, $dispatcher);
 		$urlParameter = '/high/12312.jpg';
 		$url = $extension->proxyUrl($urlParameter);
 		$this->assertSame('www.cdn.domain.com/high/12312.jpg', $url, 'prefix return failed');
@@ -79,13 +94,14 @@ class MediaProxyExtensionTest extends \PHPUnit_Framework_TestCase
 	public function testProxyUrlIgnoreHttps()
 	{
 		$router = $this->createRouterMock();
+		$dispatcher = $this->createDispatcherMock();
 
 		$prefixPath = 'www.cdn.domain.com';
 		$ignoreHttps = true;
 		$algorithm = 'sha2';
 		$secret = 'secretttToptttTen';
 
-		$extension = new MediaProxyExtension($prefixPath, $ignoreHttps, $algorithm, $secret, $router);
+		$extension = new MediaProxyExtension($prefixPath, $ignoreHttps, $algorithm, $secret, $router, $dispatcher);
 		$urlParameter = 'https://www.test.domain.com/high/12312.jpg';
 		$url = $extension->proxyUrl($urlParameter);
 		$this->assertSame($urlParameter, $url);
@@ -97,6 +113,7 @@ class MediaProxyExtensionTest extends \PHPUnit_Framework_TestCase
 	public function testProxyUrlUnsecureConnection()
 	{
 		$router = $this->createRouterMock();
+		$dispatcher = $this->createDispatcherMock();
 
 		$prefixPath = 'www.cdn.domain.com';
 		$algorithm = 'sha2';
@@ -106,14 +123,14 @@ class MediaProxyExtensionTest extends \PHPUnit_Framework_TestCase
 
 		$ignoreHttps = true;
 
-		$extension = new MediaProxyExtension($prefixPath, $ignoreHttps, $algorithm, $secret, $router);
+		$extension = new MediaProxyExtension($prefixPath, $ignoreHttps, $algorithm, $secret, $router, $dispatcher);
 		$urlParameter = 'http://www.test.domain.com/high/12312.jpg';
 		$url = $extension->proxyUrl($urlParameter);
 		$this->assertSame($urlParameter, $url);
 
 		$ignoreHttps = false;
 
-		$extension = new MediaProxyExtension($prefixPath, $ignoreHttps, $algorithm, $secret, $router);
+		$extension = new MediaProxyExtension($prefixPath, $ignoreHttps, $algorithm, $secret, $router, $dispatcher);
 		$urlParameter = 'https://www.test.domain.com/high/12312.jpg';
 		$url = $extension->proxyUrl($urlParameter);
 		$this->assertSame($urlParameter, $url);
@@ -128,6 +145,7 @@ class MediaProxyExtensionTest extends \PHPUnit_Framework_TestCase
           'This test has not been implemented yet.'
         );
 		$router = $this->createRouterMock();
+		$dispatcher = $this->createDispatcherMock();
 		$prefixPath = 'www.cdn.domain.com';
 		$ignoreHttps = false;
 		$algorithm = 'sha1';
@@ -145,7 +163,7 @@ class MediaProxyExtensionTest extends \PHPUnit_Framework_TestCase
 			->with('ItembaseMediaProxyBundle_proxy', array('hash' => urlencode($hash), 'path' => rawurlencode($urlParameter)))
 			->will($this->returnValue('$resultUrlParameter'));
 
-		$extension = new MediaProxyExtension($prefixPath, $ignoreHttps, $algorithm, $secret, $router);
+		$extension = new MediaProxyExtension($prefixPath, $ignoreHttps, $algorithm, $secret, $router, $dispatcher);
 		$extension->proxyUrl($urlParameter);
 	}
 }
