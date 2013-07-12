@@ -55,7 +55,7 @@ class MediaProxyExtension extends \Twig_Extension {
 	 * @param string $url
      * @return string
      */
-    public function proxyUrl($url) 
+    public function proxyUrl($url, $objectId=null) 
 	{
 		$parsedUrl = parse_url($url);
 
@@ -72,7 +72,7 @@ class MediaProxyExtension extends \Twig_Extension {
 		$hash = hash_hmac($this->algorithm, $url, $this->secret);
 
 		// Dispatch event
-		$event = new MediaProxyEvent($url);
+		$event = new MediaProxyEvent($url, $objectId);
 		$this->dispatcher->dispatch(MediaProxyEvents::MEDIA_PROXY, $event);
 
 		return $this->router->generate('ItembaseMediaProxyBundle_proxy', array('hash' => urlencode($hash), 'path' => rawurlencode($url)));
